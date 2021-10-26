@@ -6,10 +6,10 @@ import './App.css';
 import ObjectDetails from './ObjectDetails';
 
 const App = () => {
-  const seconds = React.useRef(0);
   const secondsRef = React.useRef(null);
   const intervalRef = React.useRef(null);
   const [index, setIndex] = React.useState(0);
+  const [seconds, setSeconds] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
   const [isPaused, setIsPaused] = React.useState(false); 
   const [objectIDs, setObjectIDs] = React.useState([]);
@@ -44,9 +44,9 @@ const App = () => {
     intervalRef.current = setInterval(() => {
       setIndex(index => index + 1);
       clearInterval(secondsRef);
-      seconds.current = 0;
+      setSeconds(0);
     }, 10000);
-    secondsRef.current = setInterval(() => seconds.current += 1, 1000);
+    secondsRef.current = setInterval(() => setSeconds(seconds => seconds + 1), 1000);
   };
 
   const pause = () => {
@@ -56,18 +56,21 @@ const App = () => {
   };
 
   const resume = () => {
+    secondsRef.current = setInterval(() => setSeconds(seconds => seconds + 1), 1000);
     setIsPaused(false);
     setTimeout(() => {
+      clearInterval(secondsRef.current);
       setIndex(index => index + 1);
-      seconds.current = 0;
+      setSeconds(0);
       start();
-    }, 10000 - seconds.current * 1000);
+    }, 10000 - seconds * 1000);
   };
 
   return (
     loading ? 
       <div className="spinner"><BounceLoader size="100px" /></div> :
       <div className="app">
+        <div>Seconds: {seconds}</div>
         {isPaused && <ObjectDetails object={currentObject} closeDetails={resume} />}
         <div className="object-details" onClick={pause}>
           {currentObject && `${currentObject.title} : ${currentObject.objectID}`}
