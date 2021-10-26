@@ -6,6 +6,8 @@ import './App.css';
 import ObjectDetails from './ObjectDetails';
 
 const App = () => {
+  const seconds = React.useRef(0);
+  const secondsRef = React.useRef(null);
   const intervalRef = React.useRef(null);
   const [index, setIndex] = React.useState(0);
   const [loading, setLoading] = React.useState(false);
@@ -41,19 +43,25 @@ const App = () => {
   const start = () => {
     intervalRef.current = setInterval(() => {
       setIndex(index => index + 1);
+      clearInterval(secondsRef);
+      seconds.current = 0;
     }, 10000);
+    secondsRef.current = setInterval(() => seconds.current += 1, 1000);
   };
 
   const pause = () => {
     clearInterval(intervalRef.current);
+    clearInterval(secondsRef.current);
     setIsPaused(true);
   };
 
   const resume = () => {
     setIsPaused(false);
-    intervalRef.current = setInterval(() => {
+    setTimeout(() => {
       setIndex(index => index + 1);
-    }, 10000);
+      seconds.current = 0;
+      start();
+    }, 10000 - seconds.current * 1000);
   };
 
   return (
