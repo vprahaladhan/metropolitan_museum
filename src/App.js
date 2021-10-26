@@ -3,6 +3,7 @@ import axios from 'axios';
 import { BounceLoader } from 'react-spinners';
 
 import './App.css';
+import ObjectDetails from './ObjectDetails';
 
 const App = () => {
   const intervalRef = React.useRef(null);
@@ -59,6 +60,10 @@ const App = () => {
     loading ? 
       <div className="spinner"><BounceLoader size="100px" /></div> :
       <div className="app">
+        {isPaused && <ObjectDetails object={currentObject} closeDetails={resume} />}
+        <div className="object-details" onClick={pause}>
+          {currentObject && `${currentObject.title} : ${currentObject.objectID}`}
+        </div>
       </div>
   );
 }

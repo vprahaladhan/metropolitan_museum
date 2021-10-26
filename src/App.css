@@ -10,7 +10,14 @@
   text-align: center;
 }
 
-.object-card {
+.spinner {
+  position: absolute;  
+  top: 40%;  
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.object-details {
   position: absolute;
   text-align: center;
   width: 100%;
@@ -20,11 +27,4 @@
   color: blue;
   text-decoration: underline;
   cursor: pointer;
-}
-
-.spinner {
-  position: absolute;  
-  top: 40%;  
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
